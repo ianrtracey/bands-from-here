@@ -1,0 +1,17 @@
+{
+  "name": "local-music-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "spotify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1"
+  }
+}
