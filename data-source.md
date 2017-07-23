@@ -9,3 +9,5 @@ The first plan of action is to collect an index of artist names and cities
 Wikipedia scraping details
 className: class="mw-category-group"
     -> then get all <li>'s under that
+Another thing to think about is the fact that the top tracks for each 
+artist is going to change based on the country that the artist is from
