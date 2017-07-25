@@ -10,12 +10,16 @@ const artistData = require('./artist_data.json');
 const sfArtistIDs = require('./san_francisco_ids.json');
 const sfTrackIDs = require('./san_francisco_track_ids.json');
 
+require('./utils.js');
+
 // Create the api object with the credentials
 const spotifyApi = new SpotifyWebApi({
   clientId : credentials.client_id,
   clientSecret : credentials.client_secret,
   redirectUri: 'localhost:8888/callback',
 });
+
+
 
 
 function authorize() {
@@ -126,6 +130,10 @@ function mapArtistSongsToTopTracks() {
     })
 }
 
+const accessToken = 'BQA8rYiI4x9r78DxWnjLlp_EHiE1gCRaZtnRXZ9HvyfakkHMdA_xATDL8-07p37nNEzpHHbHbUEl06jLHnxiQWF3ROCOoi0wqBSh3tlsNwJ-G8rvHMclySM735cGRgvYxDxvnqA4bakn0ZqBtt1E6fqdFt8BsD3TLSMdizv9YUgJpmRxPSiqU58-DCcnO_UhM_c0OWB9Ss5odGVzwWKuh6ie6peaIQmizTJNUjjslFdhVH9xoynSxaxuhw'
+const refreshToken = 'AQBTrb-GJoQgpr6qRINhQ_kGv6vTpM3Q2AzE6SUS81MfIt1jcWFCsSdD7pNiA9TyycuoeyGAiPbzxAWyFT1W2VjavpxXPm86NheosQpUsd_0slxd-ePjX3M-gGNWG312xpk'
+const userId = '126545705';
+const playlistID = '5s5tH6vif2VHBKlSEwV963';
 
 
 function useAuth() {
