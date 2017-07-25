@@ -8,8 +8,11 @@ class CitySelectorImpl extends React.Component {
 
   render() {
     const options = [
-      { value: 'one', label: 'One' },
-      { value: 'two', label: 'Two' }
+      { value: 'san-francisco-ca-us', label: 'San Francisco, CA' },
+      { value: 'ny-ny-us', label: 'New York, NY' },
+      { value: 'austin-tx-us', label: 'Austin, TX' },
+      { value: 'boston-ma-us', label: 'Boston, MA'},
+      { value: 'los-angeles-us', label: 'Los Angeles, CA' },
     ];
     return (
       <Select
