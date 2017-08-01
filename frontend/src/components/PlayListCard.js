@@ -7,7 +7,7 @@ class PlaylistCardImpl extends React.Component {
     return (
       <div>
 <article className="br2 ba dark-gray b--black-10 mv4 w-100  mw9 center">
-  <img src="https://farm8.staticflickr.com/7361/9259021382_486a9c8609_b.jpg" className="db w-100 br2 br--top" alt="Photo of a kitten looking menacing."/>
+  <img src={ this.props.image } className="db w-100 br2 br--top" alt="Photo of a kitten looking menacing."/>
   <div className="pa2 ph3-ns pb3-ns">
     <div className="dt w-100 mt1">
       <div className="dtc">
