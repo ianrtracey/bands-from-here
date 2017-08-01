@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Img from 'react-image-smooth-loading'
+
 
 class PlaylistCardImpl extends React.Component {
 
@@ -7,7 +9,7 @@ class PlaylistCardImpl extends React.Component {
     return (
       <div>
 <article className="br2 ba dark-gray b--black-10 mv4 w-100  mw9 center">
-  <img src="https://farm8.staticflickr.com/7361/9259021382_486a9c8609_b.jpg" className="db w-100 br2 br--top" alt="Photo of a kitten looking menacing."/>
+  <img src={this.props.cityImage} className="db w-100 br2 br--top" alt="Photo of a kitten looking menacing."/>
   <div className="pa2 ph3-ns pb3-ns">
     <div className="dt w-100 mt1">
       <div className="dtc">
@@ -16,13 +18,12 @@ class PlaylistCardImpl extends React.Component {
       </div>
     </div>
     <p className="f6 lh-copy measure mt2 mid-gray">
-      56 Artists
     <a className="f7 grow no-underline br-pill ph3 pv2 mb2 dib white bg-black fr" style={{"background-color":"#1DB954"}} href="#0">Open in Spotify</a>
 
     </p>
   </div>
 </article>
-      </div>
+</div>
     )
   }
 }
@@ -30,6 +31,7 @@ class PlaylistCardImpl extends React.Component {
 const mapStateToProps = (state) => {
   return {
     selectedCity: state.citySelection.label,
+    cityImage: state.citySelection.image,
   }
 }
 

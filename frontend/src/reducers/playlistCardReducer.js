@@ -1,8 +1,12 @@
 import { CHANGE_SELECT } from '../actions/const';
 
 const initialState = {
-  value: 'foobar',
-  label: 'Foobar',
+  value: '',
+  label: '',
+  image: {
+    path: '',
+    loaded: false,
+  },
 };
 
 export function citySelectorReducer(state = initialState, action) {
@@ -14,7 +18,8 @@ export function citySelectorReducer(state = initialState, action) {
       return {
         ...state,
         value: action.parameter.value,
-        label: action.parameter.label
+        label: action.parameter.label,
+        image: action.parameter.image
       }
     default: {
       /* Return original state if no actions were consumed. */
