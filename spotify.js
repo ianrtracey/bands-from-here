@@ -1,14 +1,10 @@
 const request = require('request');
-const credentials = require('./.credentials.json');
 const Promise = require('bluebird');
 const fs = require('fs');
-const _ = require('underscore');
-
+const _ = require('lodash');
+const credentials = require('./.spotify-credentials.json')
 const SpotifyWebApi = require('spotify-web-api-node');
 
-const artistData = require('./artist_data.json');
-const sfArtistIDs = require('./san_francisco_ids.json');
-const sfTrackIDs = require('./san_francisco_track_ids.json');
 
 require('./utils.js');
 
@@ -20,92 +16,44 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 
-
-
-function authorize() {
-  // Retrieve an access token.
-  return spotifyApi.clientCredentialsGrant()
-    .then(function(data) {
-      console.log('The access token expires in ' + data.body['expires_in']);
-      console.log('The access token is ' + data.body['access_token']);
-
-      // Save the access token so that it's used in future calls
-      spotifyApi.setAccessToken(data.body['access_token']);
-    });
-}
-
-function userAuth() {
-
-// The code that's returned as a query parameter to the redirect URI
-var code = 'MQCbtKe23z7YzzS44KzZzZgjQa621hgSzHN';
-
-// Retrieve an access token and a refresh token
-spotifyApi.authorizationCodeGrant(code)
-  .then(function(data) {
-    console.log('The token expires in ' + data.body['expires_in']);
-    console.log('The access token is ' + data.body['access_token']);
-    console.log('The refresh token is ' + data.body['refresh_token']);
-
-    // Set the access token on the API object to use it in later calls
-    spotifyApi.setAccessToken(data.body['access_token']);
-    spotifyApi.setRefreshToken(data.body['refresh_token']);
-  }, function(err) {
-    console.log('Something went wrong!', err);
-  });
-
-}
-
-
-
-function searchArtists(artistName) {
+function getArtistId(artistName) {
   return spotifyApi.searchArtists(artistName)
-    .then(data => {
-      return data.body
-    })
-}
-
-
-function getArtistIdsByCity() {
-  const artistNames = artistData['San Francisco'].artists;
-
-  authorize()
-    .then( () => {
-      return Promise.map(artistNames, name => {
-        return searchArtists(name);
-      }, {concurrency: 4});
-    })
-    .then ((result) => {
-      const ids = result.map( (responseBody) => {
-        if (responseBody.artists.items.length > 0) {
-          return responseBody.artists.items[0].id;
-        }
-        return '';
-      })
-      const foundIds = ids.filter((id) => {
-        return id !== '';
-      })
-      const idData = {
-        city: 'San Francisco',
-        artistIDs: foundIds,
+    .then(response => {
+      const data = response.body.artists.items
+      if (data.length > 0) {
+        return { name: artistName, artistId: data[0].id }
       }
-
-      const idJson = JSON.stringify(idData);
-      fs.writeFile('./san_francisco_ids.json', idJson, (err) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log('file written');
-      })
+      return { name: artistName, artistId: '' }
+    }, err => {
+      console.log('err', err)
+      throw err
     })
 }
 
-function getTopSongs(artistId) {
-  return spotifyApi.getArtistTopTracks(artistId, 'US')
+
+function mapArtistNamesToIds(artistNames) {
+    return Promise.map(artistNames, name => {
+        return getArtistId(name)
+    }, {concurrency: 3})
+}
+
+function mapArtistIdsToTopTracks(artistData) {
+  return Promise.map(artistData, artist => {
+    return getTopSongs(artist)
+  }, {concurrency: 3})
+}
+
+function getTopSongs(artistData) {
+  return spotifyApi.getArtistTopTracks(artistData.artistId, 'US')
     .then( response => {
       const trackIds = response.body.tracks.slice(0,3).map((track) => {
         return track.id
       })
-      return trackIds;
+      // ultimatly want to use ... syntax for this
+      return { artistName: artistData.artistName,
+               artistId: artistData.artistId,
+               topTrackIds: trackIds,
+             }
     })
 }
 
@@ -130,121 +78,55 @@ function mapArtistSongsToTopTracks() {
     })
 }
 
-const accessToken = 'BQA8rYiI4x9r78DxWnjLlp_EHiE1gCRaZtnRXZ9HvyfakkHMdA_xATDL8-07p37nNEzpHHbHbUEl06jLHnxiQWF3ROCOoi0wqBSh3tlsNwJ-G8rvHMclySM735cGRgvYxDxvnqA4bakn0ZqBtt1E6fqdFt8BsD3TLSMdizv9YUgJpmRxPSiqU58-DCcnO_UhM_c0OWB9Ss5odGVzwWKuh6ie6peaIQmizTJNUjjslFdhVH9xoynSxaxuhw'
-const refreshToken = 'AQBTrb-GJoQgpr6qRINhQ_kGv6vTpM3Q2AzE6SUS81MfIt1jcWFCsSdD7pNiA9TyycuoeyGAiPbzxAWyFT1W2VjavpxXPm86NheosQpUsd_0slxd-ePjX3M-gGNWG312xpk'
-const userId = '126545705';
-const playlistID = '5s5tH6vif2VHBKlSEwV963';
-
-
 function useAuth() {
-  spotifyApi.setAccessToken(accessToken);
-  spotifyApi.setRefreshToken(refreshToken);
+  spotifyApi.setAccessToken(credentials.accessToken);
+  spotifyApi.setRefreshToken(credentials.refreshToken);
 }
 
 
-function addTracksToPlaylist() {
-
+function addTracksToPlaylist(userId, trackIds, playlistId) {
+  const trackUris = trackIds.map((trackId) => {
+    return `spotify:track:${trackId}`
+  })
+  const trackChunks = _.chunk(trackUris, 99)
+  return Promise.map(trackChunks, tracks => {
+    return spotifyApi.addTracksToPlaylist(userId, playlistId, tracks)
+  }, {concurrency: 3})
 }
+
 useAuth();
-console.log(sfTrackIDs);
-const trackUris = sfTrackIDs.map((trackID) =>
-   `spotify:track:${trackID}`
-)
-console.dir(trackUris);
-// max of 100 items can be added at a time
-spotifyApi.addTracksToPlaylist(userId, playlistID, trackUris.slice(0, 99))
+console.log(credentials.userId)
+const cityData = require('./artists/chicago_illinois.artists.json')
+mapArtistNamesToIds(cityData.artistNames)
+  .then( (artistNameAndIDs) => {
+    console.log('done getting artist ids')
+    const validArtistIds = artistNameAndIDs.filter((artistEntry) => {
+      return artistEntry.artistId != ''
+    })
+    return mapArtistIdsToTopTracks(validArtistIds)
+  })
+  .then( (artistTopTracks) => {
+    const data = cityData
+    return spotifyApi.createPlaylist(credentials.userId, `Bands from ${data.city}, ${data.state}`)
+      .then((data) => {
+        return { artistData: artistTopTracks, playListId: data.body.id }
+      }, (err) => {
+         console.log('something went wrong', err);
+      })
+  })
   .then((result) => {
-    console.log(result)
-  }, (err) => {
-    console.log(err)
-})
-
-// spotifyApi.createPlaylist(userId, 'Bands from San Francisco')
-//   .then((data) => {
-//      console.log(data);
-//   }, (err) => {
-//      console.log('something went wrong', err);
-//   })
+    console.log('created playlist', result.playListId)
+    const trackIds = _.flatten(result.artistData.map((entry) => {
+      return entry.topTrackIds
+    }))
+    return addTracksToPlaylist(credentials.userId, trackIds, result.playListId)
+  })
+  .then((result) => {
+    console.log('done!')
+  })
+// console.log(sfTrackIDs);
+// )
+// console.dir(trackUris);
+// // max of 100 items can be added at a time
+//
 // getTopSongs();
-
-
-
-
-
-
-
-
-
-// function getCreds() {
-//   const client_id = credentials.client_id;
-//   const client_secret = credentials.client_secret;
-//   const creds = `${client_id}:${client_secret}`
-//   const base64EncodedCreds = new Buffer(creds).toString('base64');
-//   return base64EncodedCreds;
-// }
-//
-// function fetch(options) {
-//   return new Promise( (resolve, reject) => {
-//     request(options, (error, res, body) => {
-//       if (!error && res.statusCode == 200) {
-//         resolve(body);
-//       } else {
-//         reject(body);
-//       }
-//     });
-//   });
-// }
-//
-// function post(options) {
-// }
-//
-//
-// function authorize(creds) {
-//   const options = {
-//     url: 'https://accounts.spotify.com/api/token',
-//     body: JSON.stringify({
-//       grant_type: 'client_credentials',
-//     }),
-//     headers: {
-//       'Authorization': `Basic ${creds}`,
-//     },
-//   }
-//   console.log(options);
-//   request.post(options, (error, response, body) => {
-//     if (!error) {
-//       console.log(body);
-//     }
-//     console.log(`error: ${error}`);
-//   })
-// }
-//
-// function searchArtist(artistName)  {
-//   const options = {
-//     url: `https://api.spotify.com/v1/search?q=${artistName}&type=artist`,
-//     headers: {
-//       Accept: "application/json",
-//       Authorization: "Bearer BQDAiq6ZC7P3GyJRQ-NNqRQLXlGy5cFJyHzGrxJR5wW--Z5PJ-u1DmdDo0Y9qbSTyD4Ledow7DORq9CRe56TuLsEcZmreOMKtWU7eMfuaaZ3tzZ1CfK-VRMFQ26CClYqvSvTomBiB9WinQ"
-//     }
-//   }
-//   return get(options);
-// }
-//
-// async function getStuff() {
-// const res = await searchArtist("Radiohead");
-// return JSON.parse(res);
-// }
-//
-// async function main() {
-//   const response = await getStuff();
-//   console.log(response.artists.items[0]);
-// }
-//
-// const authCreds = getCreds();
-// authorize(authCreds);
-//
-//
-// // const artistNames = artistData['San Francisco'].artists;
-// // console.dir(artistNames);
-// // const sample = artistNames[0];
-// // searchArtist(sample);
-//

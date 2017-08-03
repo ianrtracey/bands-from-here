@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
+    "exec": "^0.2.1",
     "express": "^4.15.3",
     "request": "^2.81.0",
     "spotify-web-api-node": "^2.4.0",

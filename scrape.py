@@ -70,7 +70,7 @@ with open('./cities.json', 'r') as cities_json:
                 }
         artistData = json.dumps(result)
         canonicalFileName = (city + ' ' + state).lower().replace(' ', '_')
-        with open(canonicalFileName + ".artists.json", 'w') as data_file:
+        with open('./artists/'+ canonicalFileName + ".artists.json", 'w') as data_file:
             data_file.write(artistData)
 
 

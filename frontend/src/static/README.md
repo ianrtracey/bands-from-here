@@ -1,6 +1,7 @@
-# static
+# CSS  Distribution
 
-Files and directories that you put in `static` will be copied to the
-`dist/static` directory during the build step. Use it to provide
-arbitrary static assets that can be referenced by path in your
-application.
+This repository is automatically synced with the main [Semantic UI](https://github.com/Semantic-Org/Semantic-UI) repository to provide lightweight CSS only version of Semantic UI.
+
+This package **does not support theming** and includes generated CSS files of the default theme only.
+
+You can view more on Semantic UI at [LearnSemantic.com](http://www.learnsemantic.com) and [Semantic-UI.com](http://www.semantic-ui.com)
