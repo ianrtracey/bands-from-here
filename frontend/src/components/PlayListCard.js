@@ -5,7 +5,6 @@ class PlaylistCardImpl extends React.Component {
 
   render() {
     return (
-<<<<<<< Updated upstream
       <div>
 <article className="br2 ba dark-gray b--black-10 mv4 w-100  mw9 center">
   <img src={ this.props.image } className="db w-100 br2 br--top" alt="Photo of a kitten looking menacing."/>
@@ -24,24 +23,6 @@ class PlaylistCardImpl extends React.Component {
   </div>
 </article>
       </div>
-=======
-      <div className="ui raised padded card">
-      <div className="content">
-      <h3>San Francisco, CA
-      <span><i className="us flag"></i></span>
-      </h3>
-      </div>
-      <div className="image">
-        <img src='https://farm8.staticflickr.com/7361/9259021382_486a9c8609_b.jpg'/>
-      </div>
-      <div className="content">
-      <span className="right floated">
-      <i className="heart outline like icon"></i>
-      17 likes
-      </span>
-      </div>
-      </div>
->>>>>>> Stashed changes
     )
   }
 }

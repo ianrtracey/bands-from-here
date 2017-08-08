@@ -1,9 +1,0 @@
-{
-  "generator-react-webpack": {
-    "appName": "bands-from-here-frontend",
-    "style": "css",
-    "cssmodules": true,
-    "postcss": false,
-    "generatedWithVersion": 4
-  }
-}
