@@ -4,8 +4,10 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import App from './containers/App';
 import configureStore from './stores';
+import { fetchPlaylists } from './actions/citySelectorActions.js'
 
 const store = configureStore();
+store.dispatch(fetchPlaylists())
 
 ReactDOM.render(
   <AppContainer>
