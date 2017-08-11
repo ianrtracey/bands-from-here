@@ -2,6 +2,13 @@ import { CHANGE_SELECT,
          REQUEST_PLAYLISTS,
          FETCH_PLAYLISTS_SUCCESS,
 } from './const';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from '../reducers';
+import thunk from 'redux-thunk';
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+)
 
 
 export function changeSelection(parameter) {
@@ -9,15 +16,27 @@ export function changeSelection(parameter) {
   return { type: CHANGE_SELECT, parameter };
 }
 
-export function fetchPlaylistsSuccess(data) {
-  return { type: FETCH_PLAYLISTS_SUCCESS, data: data }
+function fetchPlaylists() {
+  return fetch('http://localhost:8080/api/data')
 }
 
-export function fetchPlaylists() {
-  dispatch =>
-    fetch("http://google.com")
-      .then((resp) => {
-        console.log(result.body)
-        dispatch(fetchPlaylistsSuccess(resp.body))
-      })
+function getPlaylistsSuccess(data) {
+  return {
+    type: FETCH_PLAYLISTS_SUCCESS,
+    cities: data,
+  }
+}
+
+export function getPlaylists() {
+  console.log('get playlists called')
+  return (dispatch) => {
+    return fetchPlaylists().then(
+      (data) => {
+        return data.json().then((json) => {
+          dispatch(getPlaylistsSuccess(json.results))
+        })
+      },
+      error => dispatch(getPlaylistsFailed(error)),
+    )
+  }
 }

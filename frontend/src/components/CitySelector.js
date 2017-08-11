@@ -5,20 +5,12 @@ import { changeSelection } from '../actions/citySelectorActions';
 
 class CitySelectorImpl extends React.Component {
 
-
   render() {
-    const options = [
-      { value: 'san-francisco-ca-us', label: 'San Francisco, CA' },
-      { value: 'ny-ny-us', label: 'New York, NY' },
-      { value: 'austin-tx-us', label: 'Austin, TX' },
-      { value: 'boston-ma-us', label: 'Boston, MA'},
-      { value: 'los-angeles-us', label: 'Los Angeles, CA' },
-    ];
     return (
       <Select
       name="form-field-name"
-      value={this.props.selected.value}
-      options={options}
+      value={this.props.value}
+      options={this.props.options}
       onChange={this.props.onChange}
       />
 
@@ -28,8 +20,16 @@ class CitySelectorImpl extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log('state', state)
   return {
-    selected: state.citySelection
+    label: state.citySelector.label,
+    value: state.citySelector.value,
+    options: state.citySelector.options.map((option) => {
+      return {
+        value: option.playlist_id,
+        label: `${option.city}, ${option.state}`,
+      }
+    }),
   }
 }
 

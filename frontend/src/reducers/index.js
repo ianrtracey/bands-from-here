@@ -11,6 +11,6 @@
 import { combineReducers } from 'redux';
 import { citySelectorReducer } from './citySelectorReducer';
 
-const reducers = { citySelection: citySelectorReducer };
+const reducers = { citySelector: citySelectorReducer };
 const combined = combineReducers(reducers);
 module.exports = combined;

@@ -18,6 +18,7 @@ class PlaylistCardImpl extends React.Component {
     <p className="f6 lh-copy measure mt2 mid-gray">
       56 Artists
     <a className="f7 grow no-underline br-pill ph3 pv2 mb2 dib white bg-black fr" style={{"background-color":"#1DB954"}} href="#0">Open in Spotify</a>
+    <a target="_" href={`http://open.spotify.com/user/bandsfromhere/playlist/${this.props.playlistId}`}>click here</a>
 
     </p>
   </div>
@@ -29,7 +30,8 @@ class PlaylistCardImpl extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    selectedCity: state.citySelection.label,
+    selectedCity: state.citySelector.label,
+    playlistId: state.citySelector.value,
   }
 }
 
