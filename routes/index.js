@@ -11,6 +11,7 @@ routes.get('/healthcheck', (req, res) => {
     .json({ status: 'UP' })
 })
 
+
 routes.get('/api/data', (req, res) => {
   const response = cityService.getCities()
   res
