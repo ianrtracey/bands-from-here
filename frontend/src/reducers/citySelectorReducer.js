@@ -36,4 +36,3 @@ export function citySelectorReducer(state = initialState, action) {
     }
   }
 }
-

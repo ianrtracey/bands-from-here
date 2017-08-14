@@ -1,20 +1,29 @@
 import { CHANGE_SELECT } from '../actions/const';
 
 const initialState = {
-  value: 'foobar',
-  label: 'Foobar',
+  isFlipped: false,
+  lastPlaylist: { value: '', label: ''},
+  currentPlaylist: { value: '', label: '' },
 };
 
-export function citySelectorReducer(state = initialState, action) {
-  /* Keep the reducer clean - do not mutate the original state. */
+const getFrontBackCardNewState = function(state, action) {
+  // we want to render the backside
   // const nextState = Object.assign({}, state);
+  console.log('playlistCardRedcuer', state, action)
+  return {
+    lastPlaylist: state.currentPlaylist,
+    currentPlaylist: action.parameter,
+    isFlipped: !state.isFlipped,
+  }
+}
 
+export function playlistCardReducer(state = initialState, action) {
+  /* Keep the reducer clean - do not mutate the original state. */
   switch (action.type) {
     case CHANGE_SELECT:
       return {
         ...state,
-        value: action.parameter.value,
-        label: action.parameter.label
+        ...getFrontBackCardNewState(state, action),
       }
     default: {
       /* Return original state if no actions were consumed. */

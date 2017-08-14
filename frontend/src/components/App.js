@@ -4,7 +4,8 @@ import './app.css';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { CitySelector } from './CitySelector';
-import { PlaylistCard } from './PlaylistCard';
+import { PlaylistCardContainer } from './PlaylistCardContainer'
+import Navigation from './Navigation';
 
 class AppComponent extends React.Component {
 
@@ -12,11 +13,12 @@ class AppComponent extends React.Component {
     return (
       <div>
       <div className="mw9 center ph3-ns">
+        <Navigation />
         <div className="cf ph2-ns">
           <div className="fl w-100 w-third-ns pa2">
           </div>
           <div className="fl w-100 w-third-ns pa2">
-            <PlaylistCard />
+            <PlaylistCardContainer />
             <CitySelector />
           </div>
           <div className="fl w-100 w-third-ns pa2">

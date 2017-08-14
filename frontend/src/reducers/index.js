@@ -10,7 +10,8 @@
 /* Populated by react-webpack-redux:reducer */
 import { combineReducers } from 'redux';
 import { citySelectorReducer } from './citySelectorReducer';
+import { playlistCardReducer } from './playlistCardReducer';
 
-const reducers = { citySelector: citySelectorReducer };
+const reducers = { citySelector: citySelectorReducer, playlistCard: playlistCardReducer };
 const combined = combineReducers(reducers);
 module.exports = combined;
