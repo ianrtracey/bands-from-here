@@ -4,14 +4,19 @@
   "description": "",
   "main": "spotify.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./node_modules/.bin/babel-node app.js",
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
+    "es6-promise": "^4.1.1",
     "exec": "^0.2.1",
     "express": "^4.15.3",
+    "flickrapi": "^0.6.0",
+    "isomorphic-fetch": "^2.2.1",
+    "mocha": "^3.5.0",
     "request": "^2.81.0",
     "spotify-web-api-node": "^2.4.0",
     "underscore": "^1.8.3"

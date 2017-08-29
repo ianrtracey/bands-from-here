@@ -5,11 +5,12 @@ const _ = require('lodash');
 const credentials = require('./.spotify-credentials.json')
 const SpotifyWebApi = require('spotify-web-api-node');
 
+import "isomorphic-fetch"
+
+
 
 let exports = module.exports = {}
 
-
-require('./utils.js');
 
 // Create the api object with the credentials
 const spotifyApi = new SpotifyWebApi({
@@ -101,6 +102,40 @@ function addTracksToPlaylist(userId, trackIds, playlistId) {
   }, {concurrency: 3})
 }
 
+function base64EncodePhoto(file) {
+  const bitmap = fs.readFileSync(file)
+  return new Buffer(bitmap).toString('base64')
+}
+
+function uploadPhotoToPlaylist(userId, playlistId, filepath) {
+  useAuth()
+  const imageEndpoint = `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/images`
+  console.log(credentials.accessToken)
+  fetch(imageEndpoint,
+    {
+    method: 'PUT',
+    body: base64EncodePhoto(filepath),
+    headers: new Headers({
+        'Authorization': `Bearer ${credentials.accessToken}`,
+        'Content-Type': 'image/jpeg',
+    })
+    }
+  )
+    .then(resp => {
+      console.log(resp.status)
+      console.log(resp.text().then((text) => {
+        console.log(text)
+      }))
+      })
+}
+
+async function getPlaylist(userId, playlistId) {
+  useAuth()
+  const resp =  await spotifyApi.getPlaylist(userId, playlistId)
+  return resp.body
+
+}
+
 exports.createPlaylistFromCityData = function createPlaylistFromCityData(cityData) {
 useAuth();
 return mapArtistNamesToIds(cityData.artistNames)
@@ -144,3 +179,9 @@ return mapArtistNamesToIds(cityData.artistNames)
     console.log('done!')
   })
 }
+
+// uploadPhotoToPlaylist('bandsfromhere', '5rM4q6dOvjm9R2AHbvim7o', './austin.jpg')
+getPlaylist('bandsfromhere', '5rM4q6dOvjm9R2AHbvim7o')
+  .then((resp) => {
+    console.log(resp.images)
+  })
