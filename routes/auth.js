@@ -1,6 +1,3 @@
-const routes = require('express').Router();
-
-
 /**
  * This is an example of a basic node.js script that performs
  * the Authorization Code oAuth2 flow to authenticate against
@@ -10,15 +7,15 @@ const routes = require('express').Router();
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
 
-var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
 
-const credentials = require('./.credentials.json');
+const credentials = require('../.credentials.json');
 var client_id = credentials.client_id; // Your client id
 var client_secret = credentials.client_secret; // Your secret
-var redirect_uri = '/auth/callback'; // Your redirect uri
+var redirect_uri = 'http://127.0.0.1:8080/auth/callback'; // Your redirect uri
+console.log(client_id, client_secret)
+const authRoutes = require('express').Router();
 
 /**
  * Generates a random string containing numbers and letters
@@ -37,7 +34,7 @@ var generateRandomString = function(length) {
 
 var stateKey = 'spotify_auth_state';
 
-routes.get('/auth/login', function(req, res) {
+authRoutes.get('/login', function(req, res) {
 
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
@@ -54,7 +51,7 @@ routes.get('/auth/login', function(req, res) {
     }));
 });
 
-routes.get('/auth/callback', function(req, res) {
+authRoutes.get('/callback', function(req, res) {
 
   // your application requests refresh and access tokens
   // after checking the state parameter
@@ -116,7 +113,7 @@ routes.get('/auth/callback', function(req, res) {
   }
 });
 
-routes.get('/auth/refresh_token', function(req, res) {
+authRoutes.get('/refresh_token', function(req, res) {
 
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
@@ -139,3 +136,5 @@ routes.get('/auth/refresh_token', function(req, res) {
     }
   });
 });
+
+export { authRoutes }
