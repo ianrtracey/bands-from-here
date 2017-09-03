@@ -1,10 +1,11 @@
 import React from 'react';
 import YeomanImage from './YeomanImage';
 import './app.css';
-import Select from 'react-select';
+// import Select from 'ract-select';
 import 'react-select/dist/react-select.css';
-import { CitySelector } from './CitySelector';
-import { PlaylistCardContainer } from './PlaylistCardContainer'
+// import { CitySelector } from './CitySelector';
+// import { PlaylistCardContainer } from './PlaylistCardContainer'
+import { Map } from './Map'
 import Navigation from './Navigation';
 
 class AppComponent extends React.Component {
@@ -13,16 +14,14 @@ class AppComponent extends React.Component {
     return (
       <div>
       <div className="mw9 center ph3-ns">
-        <Navigation />
-        <div className="cf ph2-ns">
-          <div className="fl w-100 w-third-ns pa2">
-          </div>
-          <div className="fl w-100 w-third-ns pa2">
-            <PlaylistCardContainer />
-            <CitySelector />
-          </div>
-          <div className="fl w-100 w-third-ns pa2">
-          </div>
+        <Navigation/>
+      </div>
+      <div className="mw9 center ph3-ns">
+        <div className="fl w-25 pa2">
+          <div>asdsd</div>
+        </div>
+        <div className="fl w-75 pa2">
+          <Map />
         </div>
       </div>
       </div>
