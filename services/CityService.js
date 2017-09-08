@@ -1,4 +1,4 @@
-const cityIndexData = require('../index.json')
+const cityIndexData = require('../index-with-location.json')
 export class CityService {
 
   constructor() {
@@ -9,7 +9,9 @@ export class CityService {
         state: entry.state,
         playlist_id: entry.playlist_id,
         country: 'US',
-        entry_id: entryKey,
+        id: entryKey,
+        latitude: entry.latitude,
+        longitude: entry.longitude,
       }
     })
     console.log(`loaded ${cityData.length} city entries`)

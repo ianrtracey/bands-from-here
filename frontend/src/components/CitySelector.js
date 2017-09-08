@@ -13,7 +13,6 @@ class CitySelectorImpl extends React.Component {
       options={this.props.options}
       onChange={this.props.onChange}
       />
-
     )
 
   }
@@ -24,12 +23,12 @@ const mapStateToProps = (state) => {
   return {
     label: state.citySelector.label,
     value: state.citySelector.value,
-    options: state.citySelector.options.map((option) => {
-      return {
-        value: option.playlist_id,
-        label: `${option.city}, ${option.state}`,
+    options: state.cities.playlistCities.map((city) => (
+      {
+        value: city.id,
+        label: `${city.city}, ${city.state}`,
       }
-    }),
+    ))
   }
 }
 

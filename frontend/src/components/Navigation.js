@@ -1,19 +1,16 @@
 import React from 'react';
+import { CitySelector } from './CitySelector'
 
 class Navigation extends React.Component {
 
   render() {
     return (
-      <nav className="db dt-l w-100 border-box pa3 ph5-l">
-      <a className="db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l" href="#" title="Home">
-      <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name"/>
-      </a>
-      <div className="db dtc-l v-mid w-100 w-75-l tc tr-l">
-      <a className="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="#" title="Home">Home</a>
-      <a className="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="#" title="How it Works">How it Works</a>
-      <a className="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="#" title="Blog">Blog</a>
-      <a className="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="#" title="Press">Press</a>
-      <a className="link dim dark-gray f6 f5-l dib" href="#" title="Contact">Contact</a>
+      <nav className="db dt-l w-100 border-box pa3 shadow-4">
+      <div className="db dtc-l v-mid w-5 tc tr">
+          <p>asd</p>
+      </div>
+      <div className="db dtc-l v-mid w-15 w-15-l tc tr">
+      <CitySelector />
       </div>
       </nav>
     )

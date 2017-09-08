@@ -12,11 +12,13 @@ import { combineReducers } from 'redux';
 import { citySelectorReducer } from './citySelectorReducer';
 import { playlistCardReducer } from './playlistCardReducer';
 import { cityReducer } from './cityReducer';
+import { mapReducer } from './mapReducer';
 
 const reducers = { 
     citySelector: citySelectorReducer, 
     playlistCard: playlistCardReducer,
     cities: cityReducer,
+    mapState: mapReducer,
 };
 const combined = combineReducers(reducers);
 module.exports = combined;

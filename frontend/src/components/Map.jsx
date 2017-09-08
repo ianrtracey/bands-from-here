@@ -2,6 +2,7 @@ import React from 'react';
 import ReactMapGL, {Marker} from 'react-map-gl';
 import { connect } from 'react-redux';
 const token = require('../../.mapbox_token.json').access_token
+import { viewportChange } from '../actions/mapActions'
 
 if (!token) {
     throw new Error('mapbox token is not valid');
@@ -9,30 +10,13 @@ if (!token) {
 
 class MapImpl extends React.Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            viewport: {
-                latitude: 37.785164,
-                longitude: -122.41669,
-                zoom: 8,
-                bearing: 0,
-                pitch: 0,
-                width: window.innerWidth,
-                height: window.innerHeight
-            }
-        }
-    }
-
-
     render() {
-        const {viewport} = this.state;
 
         return (
             <ReactMapGL
-                {...viewport}
+                {...this.props.viewport}
                 mapboxApiAccessToken={token}
-                onViewportChange={v => this.setState({viewport: v})}
+                onViewportChange={this.props.onViewportChange}
             >
             {this.props.markers.map((marker) => (
                 <Marker latitude={marker.latitude} longitude={marker.longitude} offsetLeft={-20} offsetTop={-10}>
@@ -44,8 +28,26 @@ class MapImpl extends React.Component {
     }
 }
 
+const getPosition = (cities, selectedCityId) => {
+    cities.find((city) => city.id == selectedCityId)
+}
+
+const onViewportChange = (viewport) => {
+
+}
+
 const mapStateToProps = (state) => ({
-    markers: state.cities.playlistCities
+    markers: state.cities.playlistCities,
+    viewport: state.mapState.viewport,
+    onViewportChange: onViewportChange, 
 })
 
-export const Map = connect(mapStateToProps)(MapImpl)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onViewportChange: viewport => {
+      dispatch(viewportChange(viewport))
+    }
+  }
+}
+
+export const Map = connect(mapStateToProps, mapDispatchToProps)(MapImpl)

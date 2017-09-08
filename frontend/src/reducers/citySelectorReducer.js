@@ -9,8 +9,8 @@ import { CHANGE_SELECT,
 
 const initialState = {
   options: [],
-  value: 'foobar',
-  label: 'Foobar',
+  value: null,
+  label: null,
 };
 
 export function citySelectorReducer(state = initialState, action) {

@@ -3,7 +3,6 @@ import YeomanImage from './YeomanImage';
 import './app.css';
 // import Select from 'ract-select';
 import 'react-select/dist/react-select.css';
-// import { CitySelector } from './CitySelector';
 // import { PlaylistCardContainer } from './PlaylistCardContainer'
 import { SelectionBar } from './SelectionBar' 
 import { Map } from './Map'
@@ -15,13 +14,13 @@ class AppComponent extends React.Component {
     return (
       <div>
       <div className="mw9 center ph3-ns">
-        <Navigation/>
+        <Navigation />
       </div>
       <div className="mw9 center ph3-ns">
-        <div className="fl w-30 pa2">
+        <div className="fl w-50 pa2">
           <SelectionBar />
         </div>
-        <div className="fl w-70 pa2">
+        <div className="fl w-50 pa2">
           <Map />
         </div>
       </div>
