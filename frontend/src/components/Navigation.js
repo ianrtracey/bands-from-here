@@ -13,7 +13,6 @@ class Navigation extends React.Component {
       <a className="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="#" title="How it Works">How it Works</a>
       <a className="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="#" title="Blog">Blog</a>
       <a className="link dim dark-gray f6 f5-l dib mr3 mr4-l" href="#" title="Press">Press</a>
-      <a className="link dim dark-gray f6 f5-l dib" href="#" title="Contact">Contact</a>
       </div>
       </nav>
     )

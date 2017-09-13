@@ -13,7 +13,7 @@ var querystring = require('querystring');
 const credentials = require('../.credentials.json');
 var client_id = credentials.client_id; // Your client id
 var client_secret = credentials.client_secret; // Your secret
-var redirect_uri = 'http://127.0.0.1:8080/auth/callback'; // Your redirect uri
+var redirect_uri = 'http://localhost:8080/auth/callback'; // Your redirect uri
 console.log(client_id, client_secret)
 const authRoutes = require('express').Router();
 
@@ -98,13 +98,13 @@ authRoutes.get('/callback', function(req, res) {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
+        res.redirect('/?' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect('/#' +
+        res.redirect('/?' +
           querystring.stringify({
             error: 'invalid_token'
           }));
