@@ -8,10 +8,10 @@ class CitySelectorImpl extends React.Component {
   render() {
     return (
       <Select
-      name="form-field-name"
-      value={this.props.value}
-      options={this.props.options}
-      onChange={this.props.onChange}
+        name="form-field-name"
+        value={this.props.value}
+        options={this.props.options}
+        onChange={this.props.onChange}
       />
 
     )

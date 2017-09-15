@@ -5,12 +5,18 @@ import React, {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeSelect } from '../actions/';
-import Main from '../components/App';
+import Main from '../components/AppComponent';
+import { BrowserRouter } from 'react-router-dom';
 /* Populated by react-webpack-redux:reducer */
 class App extends Component {
   render() {
     const {actions, select} = this.props;
-    return <Main actions={actions} select={select}/>;
+
+    return (
+      <BrowserRouter>
+        <Main actions={actions} select={select} />
+      </BrowserRouter>
+    );
   }
 }
 /* Populated by react-webpack-redux:reducer

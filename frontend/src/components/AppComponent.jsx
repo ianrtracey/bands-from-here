@@ -6,26 +6,24 @@ import 'react-select/dist/react-select.css';
 import { CitySelector } from './CitySelector';
 import { PlaylistCardContainer } from './PlaylistCardContainer'
 import Navigation from './Navigation';
+import { Switch, Route } from 'react-router-dom'
+import { ResultGrid } from './ResultGrid';
+import { PlaylistPage } from './PlaylistPage';
 
 class AppComponent extends React.Component {
 
   render() {
     return (
-      <div>
-      <div className="mw9 center ph3-ns">
+      <main>
         <Navigation />
-        <div className="cf ph2-ns">
-          <div className="fl w-100 w-third-ns pa2">
-          </div>
-          <div className="fl w-100 w-third-ns pa2">
-            <PlaylistCardContainer />
-            <CitySelector />
-          </div>
-          <div className="fl w-100 w-third-ns pa2">
-          </div>
+        <div className="mv5 mh7">
+          <CitySelector />
         </div>
-      </div>
-      </div>
+        <Switch>
+          <Route exact path="/" component={ResultGrid} />
+          <Route exact path="/playlist" component={PlaylistPage} />
+        </Switch>
+      </main>
     );
   }
 }
